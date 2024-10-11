@@ -18,3 +18,19 @@ spec:
         image: wil42/playground:v1
         ports:
         - containerPort: 8888
+
+---
+# Service: Expose l'application via un Service NodePort
+apiVersion: v1
+kind: Service
+metadata:
+  name: wil-playground-service
+  namespace: dev
+spec:
+  type: NodePort  # Service de type NodePort pour exposer l'application à l'extérieur du cluster
+  selector:
+    app: wil-playground
+  ports:
+  - port: 8888  # Port sur lequel le service est exposé (le même que le containerPort)
+    targetPort: 8888  # Port à l'intérieur du conteneur
+    nodePort: 30001  # Le port sur lequel le service sera accessible en dehors du cluster (entre 30000 et 32767)
